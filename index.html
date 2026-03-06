@@ -133,6 +133,12 @@
       background: var(--accent-dim) !important;
     }
     .nav-cta:hover { background: rgba(0, 224, 196, 0.18) !important; }
+    .nav-view {
+      color: var(--text-bright) !important;
+      border: 1px solid var(--border) !important;
+      background: rgba(255,255,255,0.04) !important;
+    }
+    .nav-view:hover { background: rgba(255,255,255,0.08) !important; border-color: var(--text-dim) !important; }
 
     /* ── PAGE ROUTING ── */
     .page-section { display: none; position: relative; z-index: 1; flex: 1; }
@@ -728,6 +734,7 @@
         <span>i3<em>X</em>.net</span>
       </a>
       <div class="nav-links">
+        <a href="https://view.i3x.net" target="_blank" class="nav-view">i3xview</a>
         <a href="#/downloads" class="nav-cta" data-nav>Downloads</a>
       </div>
     </div>

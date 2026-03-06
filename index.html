@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -30,7 +30,7 @@
       --font-mono: 'JetBrains Mono', monospace;
     }
 
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; overflow-x: clip; }
 
     body {
       font-family: var(--font-display);
@@ -40,6 +40,7 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      overflow-x: hidden;
     }
 
     body::before {
@@ -52,16 +53,98 @@
       z-index: 0;
     }
 
-    .page { position: relative; z-index: 1; flex: 1; }
+    /* ── SCROLL ANIMATIONS ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
 
-    /* ── HERO BANNER ── */
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(6, 8, 13, 0.85);
+      backdrop-filter: blur(16px) saturate(180%);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.625rem;
+      text-decoration: none;
+      color: var(--text-bright);
+    }
+    .nav-brand img { width: 28px; height: 28px; border-radius: 6px; }
+    .nav-brand span {
+      font-family: var(--font-mono);
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+    }
+    .nav-brand em {
+      font-style: normal;
+      background: linear-gradient(135deg, var(--accent), var(--blue));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .nav-links { display: flex; gap: 0.125rem; align-items: center; }
+    .nav-links a {
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      padding: 0.375rem 0.75rem;
+      border-radius: 6px;
+      transition: color 0.15s, background 0.15s;
+    }
+    .nav-links a:hover { color: var(--text-bright); background: rgba(255,255,255,0.04); }
+    .nav-links a.active { color: var(--accent); }
+    .nav-cta {
+      color: var(--accent) !important;
+      border: 1px solid var(--border-accent) !important;
+      background: var(--accent-dim) !important;
+    }
+    .nav-cta:hover { background: rgba(0, 224, 196, 0.18) !important; }
+
+    /* ── PAGE ROUTING ── */
+    .page-section { display: none; position: relative; z-index: 1; flex: 1; }
+    .page-section.active { display: block; }
+
+    /* ── HOME: HERO BANNER ── */
     .hero-banner {
       position: relative;
       max-width: 960px;
-      margin: 3rem auto 0;
+      margin: 5rem auto 0;
       padding: 0 2rem;
     }
-
     .hero-card {
       position: relative;
       border: 1px solid var(--border);
@@ -69,20 +152,17 @@
       overflow: hidden;
       background: var(--surface);
     }
-
     .hero-image {
       width: 100%;
       aspect-ratio: 21 / 9;
       overflow: hidden;
     }
-
     .hero-image img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
     }
-
     .hero-overlay {
       position: absolute;
       inset: 0;
@@ -92,7 +172,6 @@
       justify-content: flex-end;
       padding: 3rem;
     }
-
     .hero-overlay h1 {
       font-size: clamp(2rem, 5vw, 3rem);
       font-weight: 800;
@@ -101,7 +180,6 @@
       color: var(--text-bright);
       margin-bottom: 0.75rem;
     }
-
     .hero-overlay h1 em {
       font-style: normal;
       background: linear-gradient(135deg, var(--accent), var(--blue));
@@ -109,7 +187,6 @@
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
-
     .hero-overlay p {
       font-size: 1.0625rem;
       font-weight: 300;
@@ -118,7 +195,7 @@
       line-height: 1.7;
     }
 
-    /* ── GRID ── */
+    /* ── HOME: TOOLS GRID ── */
     .tools-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -127,7 +204,6 @@
       margin: 3rem auto 0;
       padding: 0 2rem 6rem;
     }
-
     .tool-card {
       position: relative;
       border: 1px solid var(--border);
@@ -136,59 +212,39 @@
       background: var(--surface);
       text-decoration: none;
       color: inherit;
+      cursor: pointer;
       transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
     }
-
     .tool-card:hover {
       border-color: var(--border-accent);
       transform: translateY(-4px);
       box-shadow: 0 12px 40px rgba(0, 224, 196, 0.08), 0 4px 16px rgba(0,0,0,0.3);
     }
-
-    .tool-card:hover .tool-image img {
-      transform: scale(1.04);
-    }
-
-    .tool-image {
+    .tool-card:hover .tool-img img { transform: scale(1.04); }
+    .tool-img {
       position: relative;
       width: 100%;
       aspect-ratio: 16 / 9;
       overflow: hidden;
       background: linear-gradient(135deg, #0a1628 0%, #0d1117 100%);
     }
-
-    .tool-image img {
+    .tool-img img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
       transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
-
-    .tool-image-icon {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .tool-image-icon img {
-      width: 45%;
-      height: 45%;
-      object-fit: contain;
-    }
-
-    .tool-image::after {
+    .tool-img-icon { display: flex; align-items: center; justify-content: center; }
+    .tool-img-icon img { width: 45%; height: 45%; object-fit: contain; }
+    .tool-img::after {
       content: '';
       position: absolute;
       inset: 0;
       background: linear-gradient(180deg, transparent 40%, rgba(6, 8, 13, 0.7) 100%);
       pointer-events: none;
     }
-
-    .tool-body {
-      padding: 1.5rem 1.75rem 1.75rem;
-    }
-
+    .tool-body { padding: 1.5rem 1.75rem 1.75rem; }
     .tool-badge {
       font-family: var(--font-mono);
       font-size: 0.6875rem;
@@ -197,7 +253,6 @@
       letter-spacing: 0.1em;
       margin-bottom: 0.625rem;
     }
-
     .badge-db { color: var(--accent); }
     .badge-mt { color: var(--amber); }
     .badge-csv { color: #4ade80; }
@@ -206,18 +261,8 @@
     .badge-dash { color: #f472b6; }
     .badge-mcp { color: #38bdf8; }
     .badge-opc { color: #fb923c; }
-
-    .tool-card.coming-soon {
-      pointer-events: none;
-      cursor: default;
-    }
-
-    .tool-card.coming-soon:hover {
-      border-color: var(--border);
-      transform: none;
-      box-shadow: none;
-    }
-
+    .tool-card.coming-soon { pointer-events: none; cursor: default; }
+    .tool-card.coming-soon:hover { border-color: var(--border); transform: none; box-shadow: none; }
     .coming-soon-badge {
       position: absolute;
       top: 1.5rem;
@@ -234,7 +279,6 @@
       padding: 0.35rem 0.75rem;
       z-index: 1;
     }
-
     .tool-body h2 {
       font-size: 1.5rem;
       font-weight: 700;
@@ -242,14 +286,7 @@
       letter-spacing: -0.02em;
       margin-bottom: 0.5rem;
     }
-
-    .tool-body p {
-      font-size: 0.9rem;
-      color: var(--text-dim);
-      line-height: 1.7;
-      font-weight: 400;
-    }
-
+    .tool-body p { font-size: 0.9rem; color: var(--text-dim); line-height: 1.7; font-weight: 400; }
     .tool-arrow {
       position: absolute;
       top: 1.5rem;
@@ -266,12 +303,387 @@
       transition: background 0.2s, color 0.2s, border-color 0.2s;
       z-index: 1;
     }
+    .tool-card:hover .tool-arrow { background: var(--accent-dim); color: var(--accent); border-color: var(--border-accent); }
 
-    .tool-card:hover .tool-arrow {
-      background: var(--accent-dim);
-      color: var(--accent);
-      border-color: var(--border-accent);
+    /* ── PRODUCT PAGES: SHARED ── */
+    .product-page { padding-top: 56px; }
+    .hero-product {
+      position: relative;
+      padding: 7rem 2rem 6rem;
+      max-width: 1120px;
+      margin: 0 auto;
     }
+    .hero-glow {
+      position: absolute;
+      top: -100px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 700px;
+      height: 500px;
+      background: radial-gradient(ellipse at center, rgba(0, 224, 196, 0.06) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .hero-content { position: relative; z-index: 1; }
+    .hero-product h1 {
+      font-size: clamp(3rem, 7vw, 4.5rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      color: var(--text-bright);
+      margin-bottom: 1.5rem;
+      animation: fadeInUp 0.7s 0.1s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .hero-product h1 em {
+      font-style: normal;
+      background: linear-gradient(135deg, var(--accent), var(--blue));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-dbs {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.25rem;
+      animation: fadeInUp 0.7s 0.15s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .hero-db {
+      font-family: var(--font-mono);
+      font-size: 0.625rem;
+      font-weight: 500;
+      color: var(--text-dim);
+      padding: 0.25rem 0.625rem;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      letter-spacing: 0.02em;
+    }
+    .hero-sub {
+      font-size: 1.1875rem;
+      font-weight: 300;
+      color: var(--text-dim);
+      max-width: 540px;
+      line-height: 1.7;
+      margin-bottom: 2.5rem;
+      animation: fadeInUp 0.7s 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      animation: fadeInUp 0.7s 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6875rem 1.5rem;
+      border-radius: 8px;
+      font-family: var(--font-display);
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer;
+      border: none;
+    }
+    .btn-accent { background: var(--accent); color: var(--bg); }
+    .btn-accent:hover { background: #1affd8; box-shadow: 0 0 32px var(--accent-glow), 0 4px 16px rgba(0,0,0,0.3); transform: translateY(-1px); }
+    .btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--border); }
+    .btn-ghost:hover { border-color: rgba(255,255,255,0.15); background: rgba(255,255,255,0.03); }
+    .btn-sm { padding: 0.5rem 1rem; font-size: 0.8125rem; }
+    .btn-blue { background: rgba(88, 166, 255, 0.1); color: var(--blue); border: 1px solid rgba(88, 166, 255, 0.2); }
+    .btn-blue:hover { background: rgba(88, 166, 255, 0.18); border-color: rgba(88, 166, 255, 0.35); }
+
+    /* Hero visual / screenshot */
+    .hero-visual {
+      margin-top: 5rem;
+      position: relative;
+      animation: fadeInUp 0.8s 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .hero-visual::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: 10px;
+      padding: 1px;
+      background: linear-gradient(135deg, var(--border-accent), transparent 40%, transparent 60%, rgba(88, 166, 255, 0.15));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+    }
+    .hero-visual img { width: 100%; border-radius: 10px; display: block; }
+    .hero-visual::after {
+      display: none;
+    }
+    .hero-caption {
+      text-align: center;
+      margin-top: 1.25rem;
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      color: var(--text-dim);
+      letter-spacing: 0.02em;
+    }
+
+    /* Terminal (i3xag) */
+    .terminal {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      background: #0b0f18;
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      line-height: 1.8;
+    }
+    .terminal-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1rem;
+      background: rgba(255,255,255,0.02);
+      border-bottom: 1px solid var(--border);
+    }
+    .terminal-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+    }
+    .terminal-title {
+      font-size: 0.6875rem;
+      color: var(--text-dim);
+      margin-left: auto;
+    }
+    .terminal-body { padding: 1.25rem 1.5rem; white-space: pre; overflow-x: auto; color: var(--text-dim); }
+    .terminal-body .prompt { color: var(--accent); }
+    .terminal-body .cmd { color: var(--text-bright); }
+    .terminal-body .dim { color: var(--text-dim); }
+    .terminal-body .info { color: var(--blue); }
+    .terminal-body .ok { color: var(--accent); }
+    .terminal-body .url { color: var(--blue); text-decoration: underline; }
+
+    /* Section commons */
+    .section { padding: 6rem 2rem; max-width: 1120px; margin: 0 auto; }
+    .section-rule { border: none; height: 1px; background: var(--border); max-width: 1120px; margin: 0 auto; }
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+    .section-title { font-size: 2.5rem; font-weight: 700; letter-spacing: -0.03em; color: var(--text-bright); margin-bottom: 1rem; }
+    .section-desc { font-size: 1.0625rem; color: var(--text-dim); font-weight: 300; max-width: 480px; }
+    .features-header { margin-bottom: 4rem; }
+    .feature-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .feature-item { background: var(--surface); padding: 2.25rem 2rem; transition: background 0.25s; }
+    .feature-item:hover { background: var(--surface-2); }
+    .feature-item::before {
+      content: attr(data-num);
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      font-weight: 500;
+      color: var(--text-dim);
+      display: block;
+      margin-bottom: 0.875rem;
+    }
+    .feature-item h3 { font-size: 1.0625rem; font-weight: 600; color: var(--text-bright); margin-bottom: 0.5rem; }
+    .feature-item p { font-size: 0.875rem; color: var(--text-dim); line-height: 1.7; }
+
+    /* Concept visual */
+    .concept-break { position: relative; padding: 5rem 2rem; max-width: 1120px; margin: 0 auto; overflow: hidden; }
+    .concept-break-inner { position: relative; border-radius: 16px; overflow: hidden; border: 1px solid var(--border); }
+    .concept-break img { width: 100%; display: block; opacity: 0.85; }
+    .concept-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(6,8,13,0.3) 0%, rgba(6,8,13,0.6) 60%, rgba(6,8,13,0.95) 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 3rem;
+    }
+    .concept-overlay h3 { font-size: 1.75rem; font-weight: 700; color: var(--text-bright); letter-spacing: -0.02em; margin-bottom: 0.5rem; }
+    .concept-overlay p { font-size: 0.9375rem; color: var(--text); max-width: 420px; font-weight: 300; }
+
+    /* Pipeline / How It Works */
+    .pipeline { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; align-items: start; gap: 0; margin-top: 4rem; }
+    .pipe-step { text-align: center; padding: 0 1rem; }
+    .pipe-num {
+      font-family: var(--font-mono);
+      font-size: 2.5rem;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 1rem;
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .pipe-step h3 {
+      font-family: var(--font-mono);
+      font-size: 0.9375rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 0.625rem;
+      text-transform: lowercase;
+    }
+    .pipe-step p { font-size: 0.875rem; color: var(--text-dim); line-height: 1.7; }
+    .pipe-arrow { padding-top: 2.75rem; color: var(--text-dim); opacity: 0.3; }
+    .pipe-arrow svg { display: block; }
+
+    /* Config blocks (i3xag) */
+    .config-section { max-width: 1120px; margin: 0 auto; padding: 0 2rem 2rem; }
+    .config-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .config-block {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--surface);
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      line-height: 1.8;
+    }
+    .config-block-header {
+      padding: 0.625rem 1.25rem;
+      background: rgba(255,255,255,0.02);
+      border-bottom: 1px solid var(--border);
+      font-size: 0.6875rem;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .config-block pre { padding: 1.25rem; color: var(--text-dim); white-space: pre; overflow-x: auto; }
+    .config-block .key { color: var(--accent); }
+    .config-block .str { color: var(--blue); }
+    .config-block .comment { color: var(--text-dim); opacity: 0.5; }
+
+    /* ── DOWNLOADS PAGE ── */
+    .dl-page-header { max-width: 1120px; margin: 0 auto; padding: 7rem 2rem 2rem; }
+    .dl-page-header h1 { font-size: 2.5rem; font-weight: 800; color: var(--text-bright); letter-spacing: -0.03em; margin-bottom: 0.5rem; }
+    .dl-page-header p { color: var(--text-dim); font-weight: 300; font-size: 1.0625rem; }
+    .dl-category { max-width: 1120px; margin: 0 auto; padding: 2rem 2rem 0; }
+    .dl-category-label {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 0;
+    }
+    .dl-item {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 1.5rem 0;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+    .dl-item-info { flex: 1; min-width: 200px; }
+    .dl-item-info h3 {
+      font-family: var(--font-mono);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-bright);
+      margin-bottom: 0.25rem;
+    }
+    .dl-item-info p { font-size: 0.8125rem; color: var(--text-dim); }
+    .dl-item-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .dl-version-bar {
+      max-width: 1120px;
+      margin: 3rem auto 4rem;
+      padding: 0 2rem;
+      text-align: center;
+    }
+    .dl-version-bar p {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-dim);
+    }
+    .dl-version-bar a { color: var(--accent); text-decoration: none; }
+    .dl-version-bar a:hover { text-decoration: underline; }
+
+    /* ── DOWNLOAD MODAL ── */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(8px);
+      z-index: 200;
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2.5rem;
+      width: 100%;
+      max-width: 440px;
+      position: relative;
+    }
+    .modal h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-bright);
+      margin-bottom: 0.5rem;
+    }
+    .modal > p {
+      font-size: 0.8125rem;
+      color: var(--text-dim);
+      margin-bottom: 1.5rem;
+    }
+    .modal label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-dim);
+      margin-bottom: 0.375rem;
+    }
+    .modal input, .modal textarea {
+      display: block;
+      width: 100%;
+      padding: 0.625rem 0.875rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-bright);
+      font-family: var(--font-display);
+      font-size: 0.875rem;
+      margin-bottom: 1rem;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .modal input:focus, .modal textarea:focus { border-color: var(--border-accent); }
+    .modal textarea { resize: vertical; min-height: 60px; }
+    .modal-actions { display: flex; gap: 0.75rem; margin-top: 0.5rem; }
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      cursor: pointer;
+      padding: 0.25rem;
+    }
+    .modal-close:hover { color: var(--text-bright); }
 
     /* ── FOOTER ── */
     footer {
@@ -281,35 +693,48 @@
       padding: 2rem;
       text-align: center;
     }
-
-    footer p {
-      font-size: 0.8125rem;
-      color: var(--text-dim);
-    }
-
-    footer a {
-      color: var(--text);
-      text-decoration: none;
-      transition: color 0.15s;
-    }
-
+    footer p { font-size: 0.8125rem; color: var(--text-dim); }
+    footer a { color: var(--text); text-decoration: none; transition: color 0.15s; }
     footer a:hover { color: var(--accent); }
 
     /* ── RESPONSIVE ── */
-    @media (max-width: 640px) {
-      .hero-banner { margin-top: 2rem; padding: 0 1.5rem; }
+    @media (max-width: 768px) {
+      .nav-links a:not(.nav-cta) { display: none; }
+      .hero-banner { margin-top: 4rem; padding: 0 1.5rem; }
       .hero-overlay { padding: 1.5rem; }
       .hero-image { aspect-ratio: 16 / 9; }
-      .tools-grid {
-        grid-template-columns: 1fr;
-        padding: 0 1.5rem 4rem;
-      }
+      .tools-grid { grid-template-columns: 1fr; padding: 0 1.5rem 4rem; }
+      .hero-product { padding: 7rem 1.5rem 4rem; }
+      .hero-product h1 { font-size: 2.25rem; }
+      .section { padding: 4rem 1.5rem; }
+      .feature-list { grid-template-columns: 1fr; }
+      .pipeline { grid-template-columns: 1fr; gap: 2rem; }
+      .pipe-arrow { display: none; }
+      .config-grid { grid-template-columns: 1fr; }
+      .concept-break { padding: 3rem 1.5rem; }
+      .concept-overlay { padding: 1.5rem; }
+      .concept-overlay h3 { font-size: 1.25rem; }
+      .modal { margin: 1rem; }
     }
   </style>
 </head>
 <body>
 
-  <div class="page">
+  <!-- ═══════════════════ NAV ═══════════════════ -->
+  <nav>
+    <div class="nav-inner">
+      <a href="#/" class="nav-brand" data-nav>
+        <img src="favicon.png" alt="i3X">
+        <span>i3<em>X</em>.net</span>
+      </a>
+      <div class="nav-links">
+        <a href="#/downloads" class="nav-cta" data-nav>Downloads</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════ HOME ═══════════════════ -->
+  <div class="page-section" data-page="home">
     <div class="hero-banner">
       <div class="hero-card">
         <div class="hero-image">
@@ -317,20 +742,15 @@
         </div>
         <div class="hero-overlay">
           <h1>Tools for the <em>i3X ecosystem</em></h1>
-          <p>Software for bridging databases, device telemetry, and industrial APIs through the I3X standard.</p>
+          <p>Software for bridging databases, device telemetry, and industrial APIs through the i3X standard.</p>
         </div>
       </div>
     </div>
 
     <div class="tools-grid">
-
-      <a href="https://i3xdb.com" class="tool-card" target="_blank" rel="noopener">
-        <span class="tool-arrow">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7,7 17,7 17,17"/></svg>
-        </span>
-        <div class="tool-image">
-          <img src="i3xdb_image.png" alt="i3xdb — database to i3X context model">
-        </div>
+      <a href="#/i3xdb" class="tool-card" data-nav>
+        <span class="tool-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7,7 17,7 17,17"/></svg></span>
+        <div class="tool-img"><img src="i3xdb_image.png" alt="i3xdb"></div>
         <div class="tool-body">
           <div class="tool-badge badge-db">Database</div>
           <h2>i3xdb</h2>
@@ -338,13 +758,9 @@
         </div>
       </a>
 
-      <a href="https://i3xmt.com" class="tool-card" target="_blank" rel="noopener">
-        <span class="tool-arrow">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7,7 17,7 17,17"/></svg>
-        </span>
-        <div class="tool-image">
-          <img src="i3xmt_image.png" alt="i3xmt — MTConnect to i3X context model">
-        </div>
+      <a href="#/i3xmt" class="tool-card" data-nav>
+        <span class="tool-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7,7 17,7 17,17"/></svg></span>
+        <div class="tool-img"><img src="i3xmt_image.png" alt="i3xmt"></div>
         <div class="tool-body">
           <div class="tool-badge badge-mt">MTConnect</div>
           <h2>i3xmt</h2>
@@ -352,13 +768,9 @@
         </div>
       </a>
 
-      <a href="https://i3xcsv.com" class="tool-card" target="_blank" rel="noopener">
-        <span class="tool-arrow">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7,7 17,7 17,17"/></svg>
-        </span>
-        <div class="tool-image">
-          <img src="i3xcsv_image.png" alt="i3xcsv — CSV/Excel to i3X context model">
-        </div>
+      <a href="#/i3xcsv" class="tool-card" data-nav>
+        <span class="tool-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7,7 17,7 17,17"/></svg></span>
+        <div class="tool-img"><img src="i3xcsv_image.png" alt="i3xcsv"></div>
         <div class="tool-body">
           <div class="tool-badge badge-csv">Flat File</div>
           <h2>i3xcsv</h2>
@@ -366,13 +778,9 @@
         </div>
       </a>
 
-      <a href="https://i3xag.com" class="tool-card" target="_blank" rel="noopener">
-        <span class="tool-arrow">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7,7 17,7 17,17"/></svg>
-        </span>
-        <div class="tool-image">
-          <img src="i3xag_image.png" alt="i3xag — aggregate multiple i3X servers">
-        </div>
+      <a href="#/i3xag" class="tool-card" data-nav>
+        <span class="tool-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7,7 17,7 17,17"/></svg></span>
+        <div class="tool-img"><img src="i3xag_image.png" alt="i3xag"></div>
         <div class="tool-body">
           <div class="tool-badge badge-ag">Aggregator</div>
           <h2>i3xag</h2>
@@ -380,11 +788,19 @@
         </div>
       </a>
 
+      <a href="#/i3xview" class="tool-card" data-nav>
+        <span class="tool-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7,7 17,7 17,17"/></svg></span>
+        <div class="tool-img"><img src="i3xview_image.png" alt="i3xview"></div>
+        <div class="tool-body">
+          <div class="tool-badge badge-explorer">Graph Viewer</div>
+          <h2>i3xview</h2>
+          <p>Visualize the entire i3X object graph as an interactive canvas. Explore nodes, relationships, and live values.</p>
+        </div>
+      </a>
+
       <div class="tool-card coming-soon">
         <span class="coming-soon-badge">Coming Soon</span>
-        <div class="tool-image" style="opacity: 0.5;">
-          <img src="i3xdash_image.png" alt="i3xdash — live i3X dashboard">
-        </div>
+        <div class="tool-img" style="opacity:0.5"><img src="i3xdash_image.png" alt="i3xdash"></div>
         <div class="tool-body">
           <div class="tool-badge badge-dash">Dashboard</div>
           <h2>i3xdash</h2>
@@ -394,45 +810,27 @@
 
       <div class="tool-card coming-soon">
         <span class="coming-soon-badge">Coming Soon</span>
-        <div class="tool-image" style="opacity: 0.5;">
-          <img src="i3xview_image.png" alt="i3xview — interactive i3X graph viewer">
-        </div>
-        <div class="tool-body">
-          <div class="tool-badge badge-explorer">Graph Viewer</div>
-          <h2>i3xview</h2>
-          <p>Visualize the entire i3X object graph as an interactive canvas. Explore nodes, relationships, and live values with pan, zoom, and hover-driven detail panels.</p>
-        </div>
-      </div>
-
-      <div class="tool-card coming-soon">
-        <span class="coming-soon-badge">Coming Soon</span>
-        <div class="tool-image" style="opacity: 0.5;">
-          <img src="i3xmcp_image.png" alt="i3xmcp — MCP server for i3X APIs">
-        </div>
+        <div class="tool-img" style="opacity:0.5"><img src="i3xmcp_image.png" alt="i3xmcp"></div>
         <div class="tool-body">
           <div class="tool-badge badge-mcp">MCP Server</div>
           <h2>i3xmcp</h2>
-          <p>Expose any i3X REST API as MCP tools for AI agents. Browse object hierarchies, read live sensor values, and navigate relationships through natural language.</p>
+          <p>Expose any i3X REST API as MCP tools for AI agents. Browse hierarchies, read live values, and navigate relationships.</p>
         </div>
       </div>
 
       <div class="tool-card coming-soon">
         <span class="coming-soon-badge">Coming Soon</span>
-        <div class="tool-image" style="opacity: 0.5;">
-          <img src="i3xrag_image.png" alt="i3xrag — RAG-enhanced MCP server for i3X">
-        </div>
+        <div class="tool-img" style="opacity:0.5"><img src="i3xrag_image.png" alt="i3xrag"></div>
         <div class="tool-body">
-          <div class="tool-badge badge-mcp">RAG + MCP Server</div>
+          <div class="tool-badge badge-mcp">RAG + MCP</div>
           <h2>i3xrag</h2>
-          <p>Crawl an i3X server, build a BM25 search index, and let AI agents find objects with natural language queries. A superset of i3xmcp with instant ranked search.</p>
+          <p>Crawl an i3X server, build a BM25 search index, and let AI agents find objects with natural language queries.</p>
         </div>
       </div>
 
       <div class="tool-card coming-soon">
         <span class="coming-soon-badge">Coming Soon</span>
-        <div class="tool-image" style="opacity: 0.5;">
-          <img src="i3xopc_image.png" alt="i3xopc — OPC-UA to i3X context model">
-        </div>
+        <div class="tool-img" style="opacity:0.5"><img src="i3xopc_image.png" alt="i3xopc"></div>
         <div class="tool-body">
           <div class="tool-badge badge-opc">OPC-UA</div>
           <h2>i3xopc</h2>
@@ -441,25 +839,485 @@
       </div>
 
       <a href="https://www.acetechnologies.net/i3X/" class="tool-card" target="_blank" rel="noopener">
-        <span class="tool-arrow">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7,7 17,7 17,17"/></svg>
-        </span>
-        <div class="tool-image tool-image-icon">
-          <img src="i3x-explorer_image.png" alt="i3X Explorer">
-        </div>
+        <span class="tool-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7,7 17,7 17,17"/></svg></span>
+        <div class="tool-img tool-img-icon"><img src="i3x-explorer_image.png" alt="i3X Explorer"></div>
         <div class="tool-body">
           <div class="tool-badge badge-explorer">Explorer</div>
           <h2>i3X Explorer</h2>
           <p>Cross-platform desktop client for browsing and monitoring any i3X-compliant API server. By ACE Technologies.</p>
         </div>
       </a>
-
     </div>
   </div>
 
+  <!-- ═══════════════════ i3xdb ═══════════════════ -->
+  <div class="page-section product-page" data-page="i3xdb">
+    <section class="hero-product">
+      <div class="hero-glow"></div>
+      <div class="hero-content">
+        <h1>Your database,<br>as an <em>i3X API</em></h1>
+        <div class="hero-dbs">
+          <span class="hero-db">MSSQL</span>
+          <span class="hero-db">SQLite</span>
+          <span class="hero-db">PostgreSQL</span>
+          <span class="hero-db">MySQL</span>
+          <span class="hero-db">Snowflake</span>
+          <span class="hero-db" style="opacity:0.35">DB2</span>
+        </div>
+        <p class="hero-sub">Connect to any SQL database. Auto-generate an i3X context model. Serve a standards-compliant REST API. No middleware, no ETL, no custom code.</p>
+      </div>
+      <div class="hero-visual"><img src="i3xdb_screenshot.png" alt="i3xdb desktop application"></div>
+      <p class="hero-caption">i3xdb connected to a manufacturing database &mdash; i3X composition view with live server</p>
+    </section>
+    <hr class="section-rule">
+    <section class="section" id="i3xdb-features">
+      <div class="features-header reveal"><div class="section-label">Capabilities</div><h2 class="section-title">Everything in one tool</h2><p class="section-desc">From schema discovery to a running API, without writing a line of code.</p></div>
+      <div class="feature-list reveal">
+        <div class="feature-item" data-num="01"><h3>Schema Introspection</h3><p>Discovers tables, columns, primary keys, and foreign key relationships using native database catalogs.</p></div>
+        <div class="feature-item" data-num="02"><h3>Visual Model Designer</h3><p>Dual-view canvas toggles between SQL schema and i3X composition tree. Drag, zoom, and explore.</p></div>
+        <div class="feature-item" data-num="03"><h3>One-Click Auto-Map</h3><p>Detects parent relationships, names types, selects display columns, and classifies foreign keys automatically.</p></div>
+        <div class="feature-item" data-num="04"><h3>YAML Config</h3><p>Export your mapping as YAML for version control. Re-import with live validation against any connected schema.</p></div>
+        <div class="feature-item" data-num="05"><h3>Virtual Foreign Keys</h3><p>Define custom relationships between tables that lack physical constraints. Fully supported in UI and export.</p></div>
+        <div class="feature-item" data-num="06"><h3>Headless Server</h3><p>Deploy the i3X API standalone via CLI. Load YAML config, set a port, and run in Docker or CI pipelines.</p></div>
+      </div>
+    </section>
+    <div class="concept-break reveal"><div class="concept-break-inner"><img src="i3xdb_image.png" alt="SQL to i3X"><div class="concept-overlay"><div class="section-label">The Concept</div><h3>From tables to context</h3><p>Relational schemas become semantic models. Foreign keys become compositions and relationships. Columns become attributes.</p></div></div></div>
+    <hr class="section-rule">
+    <section class="section">
+      <div class="reveal"><div class="section-label">Workflow</div><h2 class="section-title">Three steps</h2><p class="section-desc">Database to API in minutes.</p></div>
+      <div class="pipeline reveal">
+        <div class="pipe-step"><div class="pipe-num">01</div><h3>connect</h3><p>Enter a connection string. i3xdb introspects every table, column, key, and relationship.</p></div>
+        <div class="pipe-arrow"><svg width="32" height="16" viewBox="0 0 32 16" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="0" y1="8" x2="28" y2="8"/><polyline points="22,2 28,8 22,14"/></svg></div>
+        <div class="pipe-step"><div class="pipe-num">02</div><h3>map</h3><p>Use auto-mapping or the visual designer to define object types, composition, and relationships.</p></div>
+        <div class="pipe-arrow"><svg width="32" height="16" viewBox="0 0 32 16" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="0" y1="8" x2="28" y2="8"/><polyline points="22,2 28,8 22,14"/></svg></div>
+        <div class="pipe-step"><div class="pipe-num">03</div><h3>serve</h3><p>Start the embedded server. Your database is now a fully compliant i3X REST API with Swagger docs.</p></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ═══════════════════ i3xmt ═══════════════════ -->
+  <div class="page-section product-page" data-page="i3xmt">
+    <section class="hero-product">
+      <div class="hero-glow"></div>
+      <div class="hero-content">
+        <h1>Your MTConnect Agent,<br>as an <em>i3X API</em></h1>
+        <p class="hero-sub">Connect to an MQTT broker. Receive MTConnect device data in real time. Auto-generate an i3X context model. Serve a standards-compliant REST API.</p>
+      </div>
+      <div class="hero-visual"><img src="i3xmt_screenshot.png" alt="i3xmt desktop application"></div>
+      <p class="hero-caption">i3xmt connected to an MTConnect MQTT broker &mdash; device model with live i3X server</p>
+    </section>
+    <hr class="section-rule">
+    <section class="section">
+      <div class="features-header reveal"><div class="section-label">Capabilities</div><h2 class="section-title">Everything in one tool</h2><p class="section-desc">From device discovery to a running API, without writing a line of code.</p></div>
+      <div class="feature-list reveal">
+        <div class="feature-item" data-num="01"><h3>Device Discovery</h3><p>Connects to an MQTT broker and subscribes to MTConnect Probe messages to discover components, data items, and specifications.</p></div>
+        <div class="feature-item" data-num="02"><h3>Visual Model Designer</h3><p>Interactive graph canvas displays the MTConnect component hierarchy as an i3X composition tree. Drag, zoom, and explore.</p></div>
+        <div class="feature-item" data-num="03"><h3>One-Click Auto-Map</h3><p>Maps components to i3X object types, names properties from data items, and builds composition relationships automatically.</p></div>
+        <div class="feature-item" data-num="04"><h3>YAML Config</h3><p>Export your mapping as YAML for version control. Re-import to restore the device model and mapping without reconnecting.</p></div>
+        <div class="feature-item" data-num="05"><h3>Live Values</h3><p>Real-time observation table shows current values, quality, and timestamps from MTConnect Current and Sample streams.</p></div>
+        <div class="feature-item" data-num="06"><h3>Headless Server</h3><p>Deploy the i3X API standalone via CLI. Load YAML config, set a port, and run in Docker or CI pipelines.</p></div>
+      </div>
+    </section>
+    <div class="concept-break reveal"><div class="concept-break-inner"><img src="i3xmt_image.png" alt="MTConnect to i3X"><div class="concept-overlay"><div class="section-label">The Concept</div><h3>From machines to context</h3><p>MTConnect device hierarchies become semantic models. Components become compositions and relationships. Data items become live attributes.</p></div></div></div>
+    <hr class="section-rule">
+    <section class="section">
+      <div class="reveal"><div class="section-label">Workflow</div><h2 class="section-title">Three steps</h2><p class="section-desc">Machine data to API in minutes.</p></div>
+      <div class="pipeline reveal">
+        <div class="pipe-step"><div class="pipe-num">01</div><h3>connect</h3><p>Enter a broker URL and device UUID. i3xmt subscribes to MQTT and discovers every component, axis, and data item.</p></div>
+        <div class="pipe-arrow"><svg width="32" height="16" viewBox="0 0 32 16" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="0" y1="8" x2="28" y2="8"/><polyline points="22,2 28,8 22,14"/></svg></div>
+        <div class="pipe-step"><div class="pipe-num">02</div><h3>map</h3><p>Use auto-mapping or the visual designer to define object types, composition, and relationships.</p></div>
+        <div class="pipe-arrow"><svg width="32" height="16" viewBox="0 0 32 16" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="0" y1="8" x2="28" y2="8"/><polyline points="22,2 28,8 22,14"/></svg></div>
+        <div class="pipe-step"><div class="pipe-num">03</div><h3>serve</h3><p>Start the embedded server. Your machine data is now a fully compliant i3X REST API with live values and Swagger docs.</p></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ═══════════════════ i3xcsv ═══════════════════ -->
+  <div class="page-section product-page" data-page="i3xcsv">
+    <section class="hero-product">
+      <div class="hero-glow"></div>
+      <div class="hero-content">
+        <h1>Your flat files,<br>as an <em>i3X API</em></h1>
+        <p class="hero-sub">Load CSV and Excel files. Auto-detect cross-file relationships. Serve a standards-compliant REST API. No database, no middleware, no code.</p>
+      </div>
+      <div class="hero-visual"><img src="i3xcsv_screenshot.png" alt="i3xcsv desktop application"></div>
+      <p class="hero-caption">i3xcsv with equipment CSV and Excel files &mdash; i3X composition view with live server</p>
+    </section>
+    <hr class="section-rule">
+    <section class="section">
+      <div class="features-header reveal"><div class="section-label">Capabilities</div><h2 class="section-title">Everything in one tool</h2><p class="section-desc">From flat files to a running API, without writing a line of code.</p></div>
+      <div class="feature-list reveal">
+        <div class="feature-item" data-num="01"><h3>Multi-File Loading</h3><p>Load any combination of CSV and Excel files. Columns and types are inferred automatically from your data.</p></div>
+        <div class="feature-item" data-num="02"><h3>Visual Model Designer</h3><p>Dual-view canvas toggles between file schema and i3X composition tree. Drag, zoom, and explore.</p></div>
+        <div class="feature-item" data-num="03"><h3>Smart Auto-Map</h3><p>Detects cross-file relationships by matching ID columns, names types, and classifies foreign keys automatically.</p></div>
+        <div class="feature-item" data-num="04"><h3>YAML Config</h3><p>Export your mapping as YAML for version control. File paths are embedded so the headless server can reload data.</p></div>
+        <div class="feature-item" data-num="05"><h3>Virtual Foreign Keys</h3><p>Define cross-file relationships that don't exist in the source data. Link any column to any file.</p></div>
+        <div class="feature-item" data-num="06"><h3>Request Inspector</h3><p>Built-in diagnostics panel shows every API request and response body in real time. Debug your model instantly.</p></div>
+      </div>
+    </section>
+    <div class="concept-break reveal"><div class="concept-break-inner"><img src="i3xcsv_image.png" alt="CSV to i3X"><div class="concept-overlay"><div class="section-label">The Concept</div><h3>From spreadsheets to context</h3><p>Flat files become semantic models. Matching columns become compositions and relationships. Cells become attributes.</p></div></div></div>
+    <hr class="section-rule">
+    <section class="section">
+      <div class="reveal"><div class="section-label">Workflow</div><h2 class="section-title">Three steps</h2><p class="section-desc">Flat files to API in minutes.</p></div>
+      <div class="pipeline reveal">
+        <div class="pipe-step"><div class="pipe-num">01</div><h3>load</h3><p>Select your CSV and Excel files. i3xcsv parses every row and infers column types automatically.</p></div>
+        <div class="pipe-arrow"><svg width="32" height="16" viewBox="0 0 32 16" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="0" y1="8" x2="28" y2="8"/><polyline points="22,2 28,8 22,14"/></svg></div>
+        <div class="pipe-step"><div class="pipe-num">02</div><h3>map</h3><p>Auto-map detects cross-file relationships. Refine with the visual designer to define composition and hierarchy.</p></div>
+        <div class="pipe-arrow"><svg width="32" height="16" viewBox="0 0 32 16" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="0" y1="8" x2="28" y2="8"/><polyline points="22,2 28,8 22,14"/></svg></div>
+        <div class="pipe-step"><div class="pipe-num">03</div><h3>serve</h3><p>Start the embedded server. Your files are now a fully compliant i3X REST API with Swagger docs.</p></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ═══════════════════ i3xag ═══════════════════ -->
+  <div class="page-section product-page" data-page="i3xag">
+    <section class="hero-product">
+      <div class="hero-glow"></div>
+      <div class="hero-content">
+        <h1>Many i3X servers,<br>one <em>unified endpoint</em></h1>
+        <p class="hero-sub">Aggregate multiple i3X data sources into a single standards-compliant REST API. Fan out requests concurrently, merge results, and present one seamless interface.</p>
+      </div>
+      <div class="hero-visual">
+        <div class="terminal">
+          <div class="terminal-bar"><span class="terminal-dot"></span><span class="terminal-dot"></span><span class="terminal-dot"></span><span class="terminal-title">i3xag-server</span></div>
+          <div class="terminal-body"><span class="prompt">$</span> <span class="cmd">i3xag-server --config config.yaml</span>
+<span class="dim">i3xag-server v0.1.0</span>
+<span class="info"> Upstream 'SCADA'  </span> <span class="dim">-></span> http://localhost:8080
+<span class="info"> Upstream 'ERP'    </span> <span class="dim">-></span> http://localhost:8081
+<span class="info"> Upstream 'Quality'</span> <span class="dim">-></span> http://localhost:8082
+<span class="dim">Configured 3 upstream(s)</span>
+
+<span class="ok">i3xag-server listening on http://0.0.0.0:9000</span>
+<span class="dim">Swagger UI:</span> <span class="url">http://localhost:9000/swagger-ui</span>
+<span class="dim">Press Ctrl+C to stop.</span>
+
+<span class="prompt">$</span> <span class="cmd">curl http://localhost:9000/health</span>
+{
+  <span class="info">"status"</span>: <span class="ok">"Healthy"</span>,
+  <span class="info">"services"</span>: {
+    <span class="info">"SCADA"</span>:   <span class="ok">"Available"</span>,
+    <span class="info">"ERP"</span>:     <span class="ok">"Available"</span>,
+    <span class="info">"Quality"</span>: <span class="ok">"Available"</span>
+  }
+}</div>
+        </div>
+      </div>
+      <p class="hero-caption">i3xag-server aggregating three upstream i3X servers &mdash; health check showing all services available</p>
+    </section>
+    <hr class="section-rule">
+    <section class="section">
+      <div class="features-header reveal"><div class="section-label">Capabilities</div><h2 class="section-title">Unified aggregation</h2><p class="section-desc">Multiple i3X servers behind one endpoint. No code changes to your clients.</p></div>
+      <div class="feature-list reveal">
+        <div class="feature-item" data-num="01"><h3>Concurrent Fan-Out</h3><p>Every request is dispatched to all upstream servers in parallel. Results are merged and returned as a single response.</p></div>
+        <div class="feature-item" data-num="02"><h3>Graceful Degradation</h3><p>If one upstream is down, the aggregator returns partial results from the remaining servers. Failed upstreams are logged and skipped.</p></div>
+        <div class="feature-item" data-num="03"><h3>Same API Surface</h3><p>Identical routes to any i3X server. Clients connect to the aggregator without modification.</p></div>
+        <div class="feature-item" data-num="04"><h3>Health Monitoring</h3><p>Built-in /health endpoint checks each upstream and reports Healthy, Degraded, or Unhealthy status.</p></div>
+        <div class="feature-item" data-num="05"><h3>YAML Configuration</h3><p>Define your port and upstream list in a simple YAML file. Or pass everything via CLI flags.</p></div>
+        <div class="feature-item" data-num="06"><h3>Request Diagnostics</h3><p>Circular buffer of recent requests with timing, status codes, and response previews at /_diagnostics/requests.</p></div>
+      </div>
+    </section>
+    <div class="concept-break reveal"><div class="concept-break-inner"><img src="i3xag_image.png" alt="Aggregation concept"><div class="concept-overlay"><div class="section-label">The Concept</div><h3>Many sources, one graph</h3><p>Each upstream i3X server contributes its namespaces, object types, objects, relationships, and values. The aggregator merges them into a single unified view.</p></div></div></div>
+    <hr class="section-rule">
+    <section class="section">
+      <div class="reveal"><div class="section-label">Workflow</div><h2 class="section-title">Three steps</h2><p class="section-desc">Multiple servers to one endpoint in minutes.</p></div>
+      <div class="pipeline reveal">
+        <div class="pipe-step"><div class="pipe-num">01</div><h3>configure</h3><p>List your upstream i3X servers in a YAML file or pass them as CLI arguments.</p></div>
+        <div class="pipe-arrow"><svg width="32" height="16" viewBox="0 0 32 16" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="0" y1="8" x2="28" y2="8"/><polyline points="22,2 28,8 22,14"/></svg></div>
+        <div class="pipe-step"><div class="pipe-num">02</div><h3>start</h3><p>Run i3xag-server. It connects to all upstreams, verifies health, and begins listening.</p></div>
+        <div class="pipe-arrow"><svg width="32" height="16" viewBox="0 0 32 16" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="0" y1="8" x2="28" y2="8"/><polyline points="22,2 28,8 22,14"/></svg></div>
+        <div class="pipe-step"><div class="pipe-num">03</div><h3>connect</h3><p>Point any client to the aggregator. Objects, types, relationships, and values from all upstreams appear as one.</p></div>
+      </div>
+    </section>
+    <div class="config-section reveal">
+      <div class="config-grid">
+        <div class="config-block">
+          <div class="config-block-header">config.yaml</div>
+          <pre><span class="key">port</span>: <span class="str">9000</span>
+<span class="key">upstreams</span>:
+  - <span class="key">name</span>: <span class="str">"SCADA"</span>
+    <span class="key">url</span>:  <span class="str">"http://localhost:8080"</span>
+  - <span class="key">name</span>: <span class="str">"ERP"</span>
+    <span class="key">url</span>:  <span class="str">"http://localhost:8081"</span></pre>
+        </div>
+        <div class="config-block">
+          <div class="config-block-header">CLI alternative</div>
+          <pre><span class="comment"># No config file needed</span>
+i3xag-server \
+  <span class="key">--port</span> <span class="str">9000</span> \
+  <span class="key">--upstream</span> <span class="str">"SCADA=http://localhost:8080"</span> \
+  <span class="key">--upstream</span> <span class="str">"ERP=http://localhost:8081"</span></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ i3xview ═══════════════════ -->
+  <div class="page-section product-page" data-page="i3xview">
+    <section class="hero-product">
+      <div class="hero-glow"></div>
+      <div class="hero-content">
+        <h1>Your i3X model,<br>as an <em>interactive graph</em></h1>
+        <p class="hero-sub">Connect to any i3X server and visualize the entire object model as a navigable node graph. Explore compositions, relationships, and live values with pan, zoom, and hover-driven detail panels.</p>
+      </div>
+      <div class="hero-visual"><img src="i3xview_screenshot.png" alt="i3xview graph visualization"></div>
+      <p class="hero-caption">i3xview connected to an i3X server &mdash; interactive object graph with live values</p>
+    </section>
+    <hr class="section-rule">
+    <section class="section">
+      <div class="features-header reveal"><div class="section-label">Capabilities</div><h2 class="section-title">See the whole picture</h2><p class="section-desc">From connection to interactive graph in seconds.</p></div>
+      <div class="feature-list reveal">
+        <div class="feature-item" data-num="01"><h3>Interactive Canvas</h3><p>Pan, zoom, and drag nodes across a full-screen graph canvas. Click any node to inspect its properties and relationships.</p></div>
+        <div class="feature-item" data-num="02"><h3>Composition Hierarchy</h3><p>Parent-child relationships render as a hierarchical tree layout. See the full object structure at a glance.</p></div>
+        <div class="feature-item" data-num="03"><h3>Relationship Edges</h3><p>Non-compositional relationships display as colored, labeled edges. Inverse pairs are deduplicated automatically.</p></div>
+        <div class="feature-item" data-num="04"><h3>Live Values</h3><p>Nodes with values show real-time data on hover. Quality and timestamp are displayed alongside each value.</p></div>
+        <div class="feature-item" data-num="05"><h3>Web &amp; Desktop</h3><p>Runs as a static webapp (any browser) or a native desktop app (Tauri). Same codebase, automatic environment detection.</p></div>
+        <div class="feature-item" data-num="06"><h3>Zero Config</h3><p>Enter a server URL, click Connect. No setup, no install for the web version. Works with any i3X-compliant server.</p></div>
+      </div>
+    </section>
+    <div class="concept-break reveal"><div class="concept-break-inner"><img src="i3xview_image.png" alt="i3xview concept"><div class="concept-overlay"><div class="section-label">The Concept</div><h3>From API to visual graph</h3><p>Objects become nodes. Compositions become hierarchy. Relationships become edges. Values become live overlays. The entire model in one view.</p></div></div></div>
+    <hr class="section-rule">
+    <section class="section">
+      <div class="reveal"><div class="section-label">Workflow</div><h2 class="section-title">Three steps</h2><p class="section-desc">Server to graph in seconds.</p></div>
+      <div class="pipeline reveal">
+        <div class="pipe-step"><div class="pipe-num">01</div><h3>connect</h3><p>Enter an i3X server URL. i3xview fetches all objects, relationships, and values.</p></div>
+        <div class="pipe-arrow"><svg width="32" height="16" viewBox="0 0 32 16" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="0" y1="8" x2="28" y2="8"/><polyline points="22,2 28,8 22,14"/></svg></div>
+        <div class="pipe-step"><div class="pipe-num">02</div><h3>explore</h3><p>Pan and zoom the graph. Click nodes to see details. Hover for live values. Drag to rearrange.</p></div>
+        <div class="pipe-arrow"><svg width="32" height="16" viewBox="0 0 32 16" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="0" y1="8" x2="28" y2="8"/><polyline points="22,2 28,8 22,14"/></svg></div>
+        <div class="pipe-step"><div class="pipe-num">03</div><h3>understand</h3><p>See compositions, relationships, and values in context. Navigate the full model without reading raw JSON.</p></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ═══════════════════ DOWNLOADS ═══════════════════ -->
+  <div class="page-section product-page" data-page="downloads">
+    <div class="dl-page-header">
+      <h1>Downloads</h1>
+      <p>All i3X tools, servers, and utilities.</p>
+    </div>
+
+    <div class="dl-category">
+      <div class="dl-category-label">GUI Applications</div>
+      <div class="dl-item">
+        <div class="dl-item-info"><h3>i3xdb</h3><p>SQL to i3X Context Modeler &mdash; visual mapping, auto-mapping, built-in REST API</p></div>
+        <div class="dl-item-actions">
+          <button class="btn btn-sm btn-accent" onclick="openDownloadModal('i3xdb','Windows Installer','https://github.com/DataInMotionEnterprise/DIME-Releases/releases/tag/i3xdb-configurator-0.1.0')">Download</button>
+        </div>
+      </div>
+      <div class="dl-item">
+        <div class="dl-item-info"><h3>i3xmt</h3><p>MTConnect MQTT to i3X &mdash; device discovery, live values, visual designer</p></div>
+        <div class="dl-item-actions">
+          <button class="btn btn-sm btn-accent" onclick="openDownloadModal('i3xmt','Windows Installer','https://github.com/DataInMotionEnterprise/DIME-Releases/releases/tag/i3xmt-configurator-0.1.0')">Download</button>
+        </div>
+      </div>
+      <div class="dl-item">
+        <div class="dl-item-info"><h3>i3xcsv</h3><p>CSV/Excel to i3X &mdash; multi-file loading, smart auto-map, virtual foreign keys</p></div>
+        <div class="dl-item-actions">
+          <button class="btn btn-sm btn-accent" onclick="openDownloadModal('i3xcsv','Windows Installer','https://github.com/DataInMotionEnterprise/DIME-Releases/releases/tag/i3xcsv-configurator-0.1.0')">Download</button>
+        </div>
+      </div>
+      <div class="dl-item">
+        <div class="dl-item-info"><h3>i3xview</h3><p>Interactive graph viewer &mdash; visualize i3X object models as a navigable node graph</p></div>
+        <div class="dl-item-actions">
+          <button class="btn btn-sm btn-accent" onclick="openDownloadModal('i3xview','Windows Installer','https://github.com/DataInMotionEnterprise/DIME-Releases/releases/tag/i3xview-0.1.0')">Download</button>
+        </div>
+      </div>
+      <div class="dl-item">
+        <div class="dl-item-info"><h3>i3xdash</h3><p>Live dashboard &mdash; browse object hierarchies and build real-time value tiles</p></div>
+        <div class="dl-item-actions"><span class="btn btn-sm btn-ghost" style="cursor:default;opacity:0.5">Coming Soon</span></div>
+      </div>
+      <div class="dl-item">
+        <div class="dl-item-info"><h3>i3xopc</h3><p>OPC-UA to i3X &mdash; bridge OPC-UA address spaces to i3X context models</p></div>
+        <div class="dl-item-actions"><span class="btn btn-sm btn-ghost" style="cursor:default;opacity:0.5">Coming Soon</span></div>
+      </div>
+    </div>
+
+    <div class="dl-category">
+      <div class="dl-category-label">Headless Servers</div>
+      <div class="dl-item">
+        <div class="dl-item-info"><h3>i3xdb-server</h3><p>Headless i3X API from any SQL database. YAML config, Docker-ready.</p></div>
+        <div class="dl-item-actions"><span class="btn btn-sm btn-ghost" style="cursor:default;opacity:0.5">Coming Soon</span></div>
+      </div>
+      <div class="dl-item">
+        <div class="dl-item-info"><h3>i3xmt-server</h3><p>Headless MTConnect to i3X. Connect MQTT, serve REST API.</p></div>
+        <div class="dl-item-actions"><span class="btn btn-sm btn-ghost" style="cursor:default;opacity:0.5">Coming Soon</span></div>
+      </div>
+      <div class="dl-item">
+        <div class="dl-item-info"><h3>i3xcsv-server</h3><p>Headless flat file to i3X. YAML config with embedded file paths.</p></div>
+        <div class="dl-item-actions"><span class="btn btn-sm btn-ghost" style="cursor:default;opacity:0.5">Coming Soon</span></div>
+      </div>
+      <div class="dl-item">
+        <div class="dl-item-info"><h3>i3xag-server</h3><p>i3X Aggregator &mdash; merge multiple i3X servers into one endpoint.</p></div>
+        <div class="dl-item-actions"><span class="btn btn-sm btn-ghost" style="cursor:default;opacity:0.5">Coming Soon</span></div>
+      </div>
+      <div class="dl-item">
+        <div class="dl-item-info"><h3>i3xopc-server</h3><p>Headless OPC-UA to i3X. Subscribe to live node values, serve REST API.</p></div>
+        <div class="dl-item-actions"><span class="btn btn-sm btn-ghost" style="cursor:default;opacity:0.5">Coming Soon</span></div>
+      </div>
+    </div>
+
+    <div class="dl-category">
+      <div class="dl-category-label">AI / MCP Tools</div>
+      <div class="dl-item">
+        <div class="dl-item-info"><h3>i3xmcp</h3><p>MCP Server for i3X &mdash; expose any i3X API as tools for AI agents.</p></div>
+        <div class="dl-item-actions">
+          <span class="btn btn-sm btn-ghost" style="cursor:default;opacity:0.5">Coming Soon</span>
+        </div>
+      </div>
+      <div class="dl-item">
+        <div class="dl-item-info"><h3>i3xrag</h3><p>RAG + MCP Server &mdash; BM25 search index over i3X models for natural language queries.</p></div>
+        <div class="dl-item-actions">
+          <span class="btn btn-sm btn-ghost" style="cursor:default;opacity:0.5">Coming Soon</span>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+  <!-- ═══════════════════ FOOTER ═══════════════════ -->
   <footer>
     <p>&copy; 2026 <a href="https://github.com/DataInMotionEnterprise">Data In Motion Enterprise</a></p>
   </footer>
+
+  <!-- ═══════════════════ DOWNLOAD MODAL ═══════════════════ -->
+  <div class="modal-backdrop" id="dlModal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeDownloadModal()" aria-label="Close">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <h3 id="dlModalTitle">Download</h3>
+      <p>Tell us a bit about yourself and we'll start the download.</p>
+      <form action="https://formspree.io/f/xgoneabj" method="POST" id="dlForm">
+        <input type="hidden" name="tool" id="dlTool" value="">
+        <input type="hidden" name="artifact" id="dlArtifact" value="">
+        <label for="dlName">Name</label>
+        <input type="text" id="dlName" name="name" required placeholder="Your name">
+        <label for="dlEmail">Email</label>
+        <input type="email" id="dlEmail" name="email" required placeholder="you@company.com">
+        <label for="dlCompany">Company</label>
+        <input type="text" id="dlCompany" name="company" placeholder="Optional">
+        <label for="dlUseCase">Use Case</label>
+        <textarea id="dlUseCase" name="use_case" placeholder="What are you planning to use this for?" rows="2"></textarea>
+        <div class="modal-actions">
+          <button type="submit" class="btn btn-accent">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download
+          </button>
+          <button type="button" class="btn btn-ghost" onclick="closeDownloadModal()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ SCRIPTS ═══════════════════ -->
+  <script>
+    // ── Hash Router ──
+    function route() {
+      const hash = location.hash.replace(/#\/?/, '').split('#')[0] || 'home';
+      document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+      const target = document.querySelector(`[data-page="${hash}"]`);
+      if (target) {
+        target.classList.add('active');
+      } else {
+        document.querySelector('[data-page="home"]').classList.add('active');
+      }
+      // Update nav active state
+      document.querySelectorAll('.nav-links a[data-nav]').forEach(a => {
+        a.classList.toggle('active', a.getAttribute('href') === '#/' + hash);
+      });
+      // Scroll to top
+      window.scrollTo(0, 0);
+      // Re-run reveal observer for newly visible sections
+      initReveal();
+    }
+
+    window.addEventListener('hashchange', route);
+    route();
+
+    // ── Scroll Reveal ──
+    function initReveal() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+        });
+      }, { threshold: 0.15 });
+      document.querySelectorAll('.page-section.active .reveal:not(.visible)').forEach(el => observer.observe(el));
+    }
+
+    // ── Download Modal ──
+    var dlTargetUrl = '';
+    function hasSubmittedBefore() {
+      try { return localStorage.getItem('i3x_dl_submitted') === '1'; } catch(e) { return false; }
+    }
+    function markSubmitted() {
+      try { localStorage.setItem('i3x_dl_submitted', '1'); } catch(e) {}
+    }
+    function openDownloadModal(tool, artifact, url) {
+      // If user already filled form once, skip modal and go straight to download
+      if (hasSubmittedBefore()) {
+        // Still notify Formspree with stored info for tracking
+        var stored = {};
+        try { stored = JSON.parse(localStorage.getItem('i3x_dl_user') || '{}'); } catch(e) {}
+        var data = new FormData();
+        data.append('tool', tool);
+        data.append('artifact', artifact);
+        data.append('name', stored.name || '(returning)');
+        data.append('email', stored.email || '(returning)');
+        data.append('company', stored.company || '');
+        data.append('use_case', '(repeat download)');
+        fetch(document.getElementById('dlForm').action, {
+          method: 'POST', body: data, headers: { 'Accept': 'application/json' }
+        }).catch(function(){});
+        window.open(url, '_blank');
+        return;
+      }
+      dlTargetUrl = url;
+      document.getElementById('dlModalTitle').textContent = 'Download ' + tool;
+      document.getElementById('dlTool').value = tool;
+      document.getElementById('dlArtifact').value = artifact;
+      document.getElementById('dlModal').classList.add('open');
+    }
+    function closeDownloadModal() {
+      document.getElementById('dlModal').classList.remove('open');
+    }
+    // Submit via fetch, then redirect ourselves
+    document.getElementById('dlForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      var form = this;
+      var data = new FormData(form);
+      // Store user info for future downloads
+      try {
+        localStorage.setItem('i3x_dl_user', JSON.stringify({
+          name: data.get('name'),
+          email: data.get('email'),
+          company: data.get('company')
+        }));
+      } catch(e) {}
+      fetch(form.action, {
+        method: 'POST',
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      }).then(function() {
+        markSubmitted();
+        form.reset();
+        closeDownloadModal();
+        window.open(dlTargetUrl, '_blank');
+      }).catch(function() {
+        markSubmitted();
+        form.reset();
+        closeDownloadModal();
+        window.open(dlTargetUrl, '_blank');
+      });
+    });
+    // Close on backdrop click
+    document.getElementById('dlModal').addEventListener('click', function(e) {
+      if (e.target === this) closeDownloadModal();
+    });
+    // Close on Escape
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeDownloadModal();
+    });
+  </script>
 
 </body>
 </html>

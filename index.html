@@ -1100,25 +1100,25 @@ i3xag-server \
       <div class="dl-item">
         <div class="dl-item-info"><h3>i3xdb</h3><p>SQL to i3X Context Modeler &mdash; visual mapping, auto-mapping, built-in REST API</p></div>
         <div class="dl-item-actions">
-          <button class="btn btn-sm btn-accent" onclick="openDownloadModal('i3xdb','Windows Installer','https://github.com/i3xtools/.releases/releases/tag/latest')">Download</button>
+          <button class="btn btn-sm btn-accent" onclick="openDownloadModal('i3xdb','https://github.com/i3xtools/.releases/releases/tag/latest')">Download</button>
         </div>
       </div>
       <div class="dl-item">
         <div class="dl-item-info"><h3>i3xmt</h3><p>MTConnect MQTT to i3X &mdash; device discovery, live values, visual designer</p></div>
         <div class="dl-item-actions">
-          <button class="btn btn-sm btn-accent" onclick="openDownloadModal('i3xmt','Windows Installer','https://github.com/i3xtools/.releases/releases/tag/latest')">Download</button>
+          <button class="btn btn-sm btn-accent" onclick="openDownloadModal('i3xmt','https://github.com/i3xtools/.releases/releases/tag/latest')">Download</button>
         </div>
       </div>
       <div class="dl-item">
         <div class="dl-item-info"><h3>i3xcsv</h3><p>CSV/Excel to i3X &mdash; multi-file loading, smart auto-map, virtual foreign keys</p></div>
         <div class="dl-item-actions">
-          <button class="btn btn-sm btn-accent" onclick="openDownloadModal('i3xcsv','Windows Installer','https://github.com/i3xtools/.releases/releases/tag/latest')">Download</button>
+          <button class="btn btn-sm btn-accent" onclick="openDownloadModal('i3xcsv','https://github.com/i3xtools/.releases/releases/tag/latest')">Download</button>
         </div>
       </div>
       <div class="dl-item">
         <div class="dl-item-info"><h3>i3xview</h3><p>Interactive graph viewer &mdash; visualize i3X object models as a navigable node graph</p></div>
         <div class="dl-item-actions">
-          <button class="btn btn-sm btn-accent" onclick="openDownloadModal('i3xview','Windows Installer','https://github.com/i3xtools/.releases/releases/tag/latest')">Download</button>
+          <button class="btn btn-sm btn-accent" onclick="openDownloadModal('i3xview','https://github.com/i3xtools/.releases/releases/tag/latest')">Download</button>
         </div>
       </div>
       <div class="dl-item">
@@ -1189,7 +1189,6 @@ i3xag-server \
       <p>Tell us a bit about yourself and we'll start the download.</p>
       <form action="https://formspree.io/f/xgoneabj" method="POST" id="dlForm">
         <input type="hidden" name="tool" id="dlTool" value="">
-        <input type="hidden" name="artifact" id="dlArtifact" value="">
         <label for="dlName">Name</label>
         <input type="text" id="dlName" name="name" required placeholder="Your name">
         <label for="dlEmail">Email</label>
@@ -1252,7 +1251,7 @@ i3xag-server \
     function markSubmitted() {
       try { localStorage.setItem('i3x_dl_submitted', '1'); } catch(e) {}
     }
-    function openDownloadModal(tool, artifact, url) {
+    function openDownloadModal(tool, url) {
       // If user already filled form once, skip modal and go straight to download
       if (hasSubmittedBefore()) {
         // Still notify Formspree with stored info for tracking
@@ -1260,7 +1259,6 @@ i3xag-server \
         try { stored = JSON.parse(localStorage.getItem('i3x_dl_user') || '{}'); } catch(e) {}
         var data = new FormData();
         data.append('tool', tool);
-        data.append('artifact', artifact);
         data.append('name', stored.name || '(returning)');
         data.append('email', stored.email || '(returning)');
         data.append('company', stored.company || '');
@@ -1274,7 +1272,6 @@ i3xag-server \
       dlTargetUrl = url;
       document.getElementById('dlModalTitle').textContent = 'Download ' + tool;
       document.getElementById('dlTool').value = tool;
-      document.getElementById('dlArtifact').value = artifact;
       document.getElementById('dlModal').classList.add('open');
     }
     function closeDownloadModal() {

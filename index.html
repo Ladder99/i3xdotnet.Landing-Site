@@ -691,6 +691,35 @@
     }
     .modal-close:hover { color: var(--text-bright); }
 
+    /* ── i3X.DEV BANNER ── */
+    .i3xdev-banner {
+      background: linear-gradient(135deg, rgba(14,165,233,0.12), rgba(16,185,129,0.12));
+      border: 1px solid rgba(14,165,233,0.3);
+      border-radius: 10px;
+      padding: 1.25rem 1.5rem;
+      margin: 2rem auto;
+      max-width: 720px;
+      text-align: center;
+    }
+    .i3xdev-banner p {
+      font-size: 0.9375rem;
+      color: var(--text);
+      margin: 0 0 0.75rem;
+      line-height: 1.5;
+    }
+    .i3xdev-banner a.i3xdev-link {
+      display: inline-block;
+      padding: 0.5rem 1.5rem;
+      background: #0ea5e9;
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.9375rem;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .i3xdev-banner a.i3xdev-link:hover { background: #0284c7; }
+
     /* ── FOOTER ── */
     footer {
       position: relative;
@@ -752,6 +781,11 @@
           <p>Software for bridging databases, device telemetry, and industrial APIs through the i3X standard.</p>
         </div>
       </div>
+    </div>
+
+    <div class="i3xdev-banner">
+      <p>These tools are built for the <strong>i3X standard</strong>, maintained by the i3X Working Group.</p>
+      <a href="https://i3x.dev" target="_blank" class="i3xdev-link">Visit i3x.dev &mdash; the official i3X specification &rarr;</a>
     </div>
 
     <div class="tools-grid">
@@ -1183,6 +1217,7 @@ i3xag-server \
 
   <!-- ═══════════════════ FOOTER ═══════════════════ -->
   <footer>
+    <p>The i3X standard is maintained by the <a href="https://i3x.dev" target="_blank" style="color: #0ea5e9;">i3X Working Group at i3x.dev</a></p>
     <p>&copy; 2026 <a href="https://github.com/DataInMotionEnterprise">Data In Motion Enterprise</a></p>
   </footer>
 

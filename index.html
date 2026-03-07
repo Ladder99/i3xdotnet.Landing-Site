@@ -839,35 +839,35 @@
         </div>
       </a>
 
-      <div class="tool-card coming-soon">
-        <span class="coming-soon-badge">Coming Soon</span>
-        <div class="tool-img" style="opacity:0.5"><img src="i3xdash_image.png" alt="i3xdash"></div>
+      <a href="#/i3xdash" class="tool-card" data-nav>
+        <span class="tool-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7,7 17,7 17,17"/></svg></span>
+        <div class="tool-img"><img src="i3xdash_image.png" alt="i3xdash"></div>
         <div class="tool-body">
           <div class="tool-badge badge-dash">Dashboard</div>
           <h2>i3xdash</h2>
           <p>Connect to any i3X server, browse the object hierarchy, and build live dashboards with real-time value tiles.</p>
         </div>
-      </div>
+      </a>
 
-      <div class="tool-card coming-soon">
-        <span class="coming-soon-badge">Coming Soon</span>
-        <div class="tool-img" style="opacity:0.5"><img src="i3xmcp_image.png" alt="i3xmcp"></div>
+      <a href="#/i3xmcp" class="tool-card" data-nav>
+        <span class="tool-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7,7 17,7 17,17"/></svg></span>
+        <div class="tool-img"><img src="i3xmcp_image.png" alt="i3xmcp"></div>
         <div class="tool-body">
           <div class="tool-badge badge-mcp">MCP Server</div>
           <h2>i3xmcp</h2>
           <p>Expose any i3X REST API as MCP tools for AI agents. Browse hierarchies, read live values, and navigate relationships.</p>
         </div>
-      </div>
+      </a>
 
-      <div class="tool-card coming-soon">
-        <span class="coming-soon-badge">Coming Soon</span>
-        <div class="tool-img" style="opacity:0.5"><img src="i3xrag_image.png" alt="i3xrag"></div>
+      <a href="#/i3xrag" class="tool-card" data-nav>
+        <span class="tool-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7,7 17,7 17,17"/></svg></span>
+        <div class="tool-img"><img src="i3xrag_image.png" alt="i3xrag"></div>
         <div class="tool-body">
           <div class="tool-badge badge-mcp">RAG + MCP</div>
           <h2>i3xrag</h2>
           <p>Crawl an i3X server, build a BM25 search index, and let AI agents find objects with natural language queries.</p>
         </div>
-      </div>
+      </a>
 
       <div class="tool-card coming-soon">
         <span class="coming-soon-badge">Coming Soon</span>
@@ -1127,6 +1127,198 @@ i3xag-server \
         <div class="pipe-step"><div class="pipe-num">03</div><h3>understand</h3><p>See compositions, relationships, and values in context. Navigate the full model without reading raw JSON.</p></div>
       </div>
     </section>
+  </div>
+
+  <!-- ═══════════════════ i3xdash ═══════════════════ -->
+  <div class="page-section product-page" data-page="i3xdash">
+    <section class="hero-product">
+      <div class="hero-glow"></div>
+      <div class="hero-content">
+        <h1>Your i3X data,<br>on a <em>live dashboard</em></h1>
+        <p class="hero-sub">Connect to any i3X server, browse the full object hierarchy, and build real-time dashboards with configurable tiles. Values, gauges, sparklines, and state timelines &mdash; all updating live.</p>
+      </div>
+      <div class="hero-visual"><img src="i3xdash_screenshot.png" alt="i3xdash desktop application"></div>
+      <p class="hero-caption">i3xdash connected to an i3X server &mdash; live dashboard with value, gauge, sparkline, and timeline tiles</p>
+    </section>
+    <hr class="section-rule">
+    <section class="section">
+      <div class="features-header reveal"><div class="section-label">Capabilities</div><h2 class="section-title">Monitor everything</h2><p class="section-desc">From object browser to live dashboard in seconds.</p></div>
+      <div class="feature-list reveal">
+        <div class="feature-item" data-num="01"><h3>Object Browser</h3><p>Navigate the full i3X hierarchy &mdash; namespaces, object types, and instances. Filter and search across the entire model.</p></div>
+        <div class="feature-item" data-num="02"><h3>Live Value Panel</h3><p>Select any object to see its current value, quality, and timestamp. Multi-property objects display all fields in a table.</p></div>
+        <div class="feature-item" data-num="03"><h3>Four Tile Types</h3><p>Value tiles for single numbers, gauges for ranges, sparklines for trends, and state timelines for discrete state tracking.</p></div>
+        <div class="feature-item" data-num="04"><h3>Drag &amp; Resize</h3><p>Drag tiles to any grid position. Resize by pulling edges or corners. Overlap detection prevents layout conflicts.</p></div>
+        <div class="feature-item" data-num="05"><h3>Per-Tile Config</h3><p>Configure units, decimal precision, thresholds, colors, Y-axis ranges, and more. Each tile type has its own settings.</p></div>
+        <div class="feature-item" data-num="06"><h3>Save &amp; Load</h3><p>Persist dashboard layouts to JSON. Reload and continue where you left off. Full backward compatibility.</p></div>
+      </div>
+    </section>
+    <div class="concept-break reveal"><div class="concept-break-inner"><img src="i3xdash_image.png" alt="i3xdash concept"><div class="concept-overlay"><div class="section-label">The Concept</div><h3>Browse, pin, monitor</h3><p>Navigate the object tree, find the values that matter, and pin them as live tiles. Build operational dashboards without writing code.</p></div></div></div>
+    <hr class="section-rule">
+    <section class="section">
+      <div class="reveal"><div class="section-label">Workflow</div><h2 class="section-title">Three steps</h2><p class="section-desc">From connection to live dashboard in minutes.</p></div>
+      <div class="pipeline reveal">
+        <div class="pipe-step"><div class="pipe-num">01</div><h3>connect</h3><p>Enter an i3X server URL. i3xdash loads the full object model and begins polling for live values.</p></div>
+        <div class="pipe-arrow"><svg width="32" height="16" viewBox="0 0 32 16" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="0" y1="8" x2="28" y2="8"/><polyline points="22,2 28,8 22,14"/></svg></div>
+        <div class="pipe-step"><div class="pipe-num">02</div><h3>browse</h3><p>Explore namespaces, types, and objects. Select any object to see its live value, quality, and related objects.</p></div>
+        <div class="pipe-arrow"><svg width="32" height="16" viewBox="0 0 32 16" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="0" y1="8" x2="28" y2="8"/><polyline points="22,2 28,8 22,14"/></svg></div>
+        <div class="pipe-step"><div class="pipe-num">03</div><h3>dashboard</h3><p>Pin values as tiles. Choose value, gauge, sparkline, or timeline. Drag, resize, and configure each tile individually.</p></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ═══════════════════ i3xmcp ═══════════════════ -->
+  <div class="page-section product-page" data-page="i3xmcp">
+    <section class="hero-product">
+      <div class="hero-glow"></div>
+      <div class="hero-content">
+        <h1>Your i3X API,<br>as <em>AI agent tools</em></h1>
+        <p class="hero-sub">Turn any i3X REST API into an MCP tool server. AI agents can browse hierarchies, read live values, navigate relationships, and query objects &mdash; all through the Model Context Protocol.</p>
+      </div>
+      <div class="hero-visual">
+        <div class="terminal">
+          <div class="terminal-bar"><span class="terminal-dot"></span><span class="terminal-dot"></span><span class="terminal-dot"></span><span class="terminal-title">i3xmcp</span></div>
+          <div class="terminal-body"><span class="dim">i3xmcp v1.0.0</span>
+<span class="ok">MCP server ready (stdio)</span>
+<span class="dim">Tools registered:</span>
+  <span class="info">list_namespaces</span>     <span class="dim">List all namespaces</span>
+  <span class="info">list_object_types</span>   <span class="dim">List types in a namespace</span>
+  <span class="info">list_objects</span>        <span class="dim">List instances of a type</span>
+  <span class="info">get_value</span>           <span class="dim">Read live value for an object</span>
+  <span class="info">get_related</span>         <span class="dim">Navigate relationships</span>
+  <span class="info">get_values_bulk</span>     <span class="dim">Read multiple values at once</span>
+
+<span class="dim">Waiting for agent connection...</span></div>
+        </div>
+      </div>
+      <p class="hero-caption">i3xmcp running as an MCP stdio server &mdash; ready for AI agent connections</p>
+    </section>
+    <hr class="section-rule">
+    <section class="section">
+      <div class="features-header reveal"><div class="section-label">Capabilities</div><h2 class="section-title">AI meets industrial data</h2><p class="section-desc">Give AI agents direct access to your i3X object models.</p></div>
+      <div class="feature-list reveal">
+        <div class="feature-item" data-num="01"><h3>Full i3X Coverage</h3><p>Every i3X API endpoint exposed as an MCP tool. Namespaces, types, objects, values, and relationships.</p></div>
+        <div class="feature-item" data-num="02"><h3>Model Context Protocol</h3><p>Standard MCP interface compatible with Claude, GPT, and any MCP-capable AI agent or IDE.</p></div>
+        <div class="feature-item" data-num="03"><h3>Live Values</h3><p>Agents can read real-time values with quality and timestamp. Single or bulk reads supported.</p></div>
+        <div class="feature-item" data-num="04"><h3>Relationship Navigation</h3><p>Traverse the object graph through relationships. Agents can follow links to discover connected objects.</p></div>
+        <div class="feature-item" data-num="05"><h3>Zero Config</h3><p>Point at a server URL and start. No schema files, no code generation, no mapping required.</p></div>
+        <div class="feature-item" data-num="06"><h3>Standalone Binary</h3><p>Single executable, no runtime dependencies. Runs on Windows, macOS, and Linux.</p></div>
+      </div>
+    </section>
+    <div class="concept-break reveal"><div class="concept-break-inner"><img src="i3xmcp_image.png" alt="i3xmcp concept"><div class="concept-overlay"><div class="section-label">The Concept</div><h3>Industrial data for AI</h3><p>Your i3X server already has the data. i3xmcp gives AI agents the tools to access it &mdash; browse, query, and read live values through a standard protocol.</p></div></div></div>
+    <hr class="section-rule">
+    <section class="section">
+      <div class="reveal"><div class="section-label">Workflow</div><h2 class="section-title">Three steps</h2><p class="section-desc">From i3X API to AI-accessible tools in seconds.</p></div>
+      <div class="pipeline reveal">
+        <div class="pipe-step"><div class="pipe-num">01</div><h3>configure</h3><p>Add i3xmcp to your MCP client config. Point it at the executable path.</p></div>
+        <div class="pipe-arrow"><svg width="32" height="16" viewBox="0 0 32 16" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="0" y1="8" x2="28" y2="8"/><polyline points="22,2 28,8 22,14"/></svg></div>
+        <div class="pipe-step"><div class="pipe-num">02</div><h3>connect</h3><p>The AI agent calls the connect tool with your i3X server URL. All API endpoints become available as MCP tools.</p></div>
+        <div class="pipe-arrow"><svg width="32" height="16" viewBox="0 0 32 16" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="0" y1="8" x2="28" y2="8"/><polyline points="22,2 28,8 22,14"/></svg></div>
+        <div class="pipe-step"><div class="pipe-num">03</div><h3>query</h3><p>AI agents call MCP tools to browse objects, read values, and navigate relationships in natural language.</p></div>
+      </div>
+    </section>
+    <div class="config-section reveal">
+      <div class="config-grid">
+        <div class="config-block">
+          <div class="config-block-header">claude_desktop_config.json</div>
+          <pre>{
+  <span class="info">"mcpServers"</span>: {
+    <span class="info">"i3xmcp"</span>: {
+      <span class="info">"command"</span>: <span class="str">"C:/path/to/i3xmcp.exe"</span>
+    }
+  }
+}</pre>
+        </div>
+        <div class="config-block">
+          <div class="config-block-header">.claude/settings.json</div>
+          <pre>{
+  <span class="info">"mcpServers"</span>: {
+    <span class="info">"i3xmcp"</span>: {
+      <span class="info">"command"</span>: <span class="str">"C:/path/to/i3xmcp.exe"</span>
+    }
+  }
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ i3xrag ═══════════════════ -->
+  <div class="page-section product-page" data-page="i3xrag">
+    <section class="hero-product">
+      <div class="hero-glow"></div>
+      <div class="hero-content">
+        <h1>Your i3X model,<br>searchable by <em>natural language</em></h1>
+        <p class="hero-sub">Crawl an i3X server, build a BM25 search index over every object, and let AI agents find what they need with plain-English queries. RAG + MCP in one package.</p>
+      </div>
+      <div class="hero-visual">
+        <div class="terminal">
+          <div class="terminal-bar"><span class="terminal-dot"></span><span class="terminal-dot"></span><span class="terminal-dot"></span><span class="terminal-title">i3xrag</span></div>
+          <div class="terminal-body"><span class="dim">i3xrag v1.0.0</span>
+<span class="ok">MCP server ready (stdio)</span>
+<span class="dim">Tools registered:</span>
+  <span class="info">connect_and_index</span>   <span class="dim">Crawl and index an i3X server</span>
+  <span class="info">search</span>              <span class="dim">Natural language search</span>
+  <span class="info">search_by_type</span>      <span class="dim">Search within an object type</span>
+  <span class="info">describe_model</span>      <span class="dim">Overview of the indexed model</span>
+  <span class="info">get_object</span>          <span class="dim">Get full object details</span>
+  <span class="info">get_related</span>         <span class="dim">Navigate relationships</span>
+
+<span class="dim">Agent calls connect_and_index...</span>
+<span class="dim">Crawling object model...</span>
+<span class="ok"> Indexed 1,247 objects across 3 namespaces</span>
+<span class="ok"> BM25 search index ready</span></div>
+        </div>
+      </div>
+      <p class="hero-caption">i3xrag running as an MCP server &mdash; agent connects, indexes, and searches</p>
+    </section>
+    <hr class="section-rule">
+    <section class="section">
+      <div class="features-header reveal"><div class="section-label">Capabilities</div><h2 class="section-title">Search, don't browse</h2><p class="section-desc">Let AI agents find objects by meaning, not by ID.</p></div>
+      <div class="feature-list reveal">
+        <div class="feature-item" data-num="01"><h3>Full Model Crawl</h3><p>Automatically discovers and indexes every namespace, type, object, and relationship in the i3X server.</p></div>
+        <div class="feature-item" data-num="02"><h3>BM25 Search</h3><p>Industry-standard ranking algorithm. Search by display name, type, namespace, or any combination of terms.</p></div>
+        <div class="feature-item" data-num="03"><h3>Natural Language</h3><p>Agents ask questions like &ldquo;find all temperature sensors&rdquo; or &ldquo;show pumps in Building A&rdquo; and get ranked results.</p></div>
+        <div class="feature-item" data-num="04"><h3>Type-Scoped Search</h3><p>Narrow search to a specific object type for precision. Combine free-text with structural filtering.</p></div>
+        <div class="feature-item" data-num="05"><h3>Model Overview</h3><p>Describe the full model structure &mdash; namespace count, type distribution, total objects &mdash; before diving in.</p></div>
+        <div class="feature-item" data-num="06"><h3>Live Data Access</h3><p>After finding objects via search, read their live values, quality, and relationships through the same MCP server.</p></div>
+      </div>
+    </section>
+    <div class="concept-break reveal"><div class="concept-break-inner"><img src="i3xrag_image.png" alt="i3xrag concept"><div class="concept-overlay"><div class="section-label">The Concept</div><h3>Index once, search instantly</h3><p>The entire i3X object model is crawled and indexed on startup. AI agents search by meaning instead of navigating hierarchies manually.</p></div></div></div>
+    <hr class="section-rule">
+    <section class="section">
+      <div class="reveal"><div class="section-label">Workflow</div><h2 class="section-title">Three steps</h2><p class="section-desc">From i3X API to searchable knowledge base in seconds.</p></div>
+      <div class="pipeline reveal">
+        <div class="pipe-step"><div class="pipe-num">01</div><h3>configure</h3><p>Add i3xrag to your MCP client config. Point it at the executable path.</p></div>
+        <div class="pipe-arrow"><svg width="32" height="16" viewBox="0 0 32 16" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="0" y1="8" x2="28" y2="8"/><polyline points="22,2 28,8 22,14"/></svg></div>
+        <div class="pipe-step"><div class="pipe-num">02</div><h3>index</h3><p>The AI agent calls connect_and_index with a server URL. i3xrag crawls the full model and builds a BM25 search index.</p></div>
+        <div class="pipe-arrow"><svg width="32" height="16" viewBox="0 0 32 16" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="0" y1="8" x2="28" y2="8"/><polyline points="22,2 28,8 22,14"/></svg></div>
+        <div class="pipe-step"><div class="pipe-num">03</div><h3>search</h3><p>Ask questions in natural language. Get ranked results. Read live values from the matches.</p></div>
+      </div>
+    </section>
+    <div class="config-section reveal">
+      <div class="config-grid">
+        <div class="config-block">
+          <div class="config-block-header">claude_desktop_config.json</div>
+          <pre>{
+  <span class="info">"mcpServers"</span>: {
+    <span class="info">"i3xrag"</span>: {
+      <span class="info">"command"</span>: <span class="str">"C:/path/to/i3xrag.exe"</span>
+    }
+  }
+}</pre>
+        </div>
+        <div class="config-block">
+          <div class="config-block-header">.claude/settings.json</div>
+          <pre>{
+  <span class="info">"mcpServers"</span>: {
+    <span class="info">"i3xrag"</span>: {
+      <span class="info">"command"</span>: <span class="str">"C:/path/to/i3xrag.exe"</span>
+    }
+  }
+}</pre>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- ═══════════════════ DOWNLOADS ═══════════════════ -->

@@ -878,9 +878,9 @@
         <span class="tool-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7,7 17,7 17,17"/></svg></span>
         <div class="tool-img"><img src="i3xrag_image.png" alt="i3xrag"></div>
         <div class="tool-body">
-          <div class="tool-badge badge-mcp">RAG + MCP</div>
+          <div class="tool-badge badge-mcp">RAG + Graph + MCP</div>
           <h2>i3xrag</h2>
-          <p>Crawl an i3X server, build a BM25 search index, and let AI agents find objects with natural language queries.</p>
+          <p>Crawl an i3X server, build a search index and graph database. AI agents search, traverse, and analyze the full object model.</p>
         </div>
       </a>
 
@@ -1263,49 +1263,53 @@ i3xag-server \
       <div class="hero-glow"></div>
       <div class="hero-content">
         <h1>Your i3X model,<br>searchable by <em>natural language</em></h1>
-        <p class="hero-sub">Crawl an i3X server, build a BM25 search index over every object, and let AI agents find what they need with plain-English queries. RAG + MCP in one package.</p>
+        <p class="hero-sub">Crawl an i3X server, build a BM25 search index and an in-memory graph database, and let AI agents search, traverse, and analyze the entire object model. RAG + Graph + MCP in one package.</p>
       </div>
       <div class="hero-visual">
         <div class="terminal">
           <div class="terminal-bar"><span class="terminal-dot"></span><span class="terminal-dot"></span><span class="terminal-dot"></span><span class="terminal-title">i3xrag</span></div>
           <div class="terminal-body"><span class="dim">i3xrag v1.0.0</span>
 <span class="ok">MCP server ready (stdio)</span>
-<span class="dim">Tools registered:</span>
-  <span class="info">connect_and_index</span>   <span class="dim">Crawl and index an i3X server</span>
-  <span class="info">search</span>              <span class="dim">Natural language search</span>
+<span class="dim">Search tools:</span>
+  <span class="info">search</span>              <span class="dim">Natural language BM25 search</span>
   <span class="info">search_by_type</span>      <span class="dim">Search within an object type</span>
-  <span class="info">describe_model</span>      <span class="dim">Overview of the indexed model</span>
-  <span class="info">get_object</span>          <span class="dim">Get full object details</span>
-  <span class="info">get_related</span>         <span class="dim">Navigate relationships</span>
+<span class="dim">Graph tools:</span>
+  <span class="info">traverse</span>            <span class="dim">Walk N hops from a node</span>
+  <span class="info">find_path</span>           <span class="dim">Shortest path between two nodes</span>
+  <span class="info">neighborhood</span>        <span class="dim">All nodes within N hops</span>
+  <span class="info">subtree_summary</span>     <span class="dim">Count types under a parent</span>
+  <span class="info">ancestors</span>           <span class="dim">Walk up hierarchy to root</span>
+  <span class="info">aggregate</span>           <span class="dim">Group by type or parent</span>
 
 <span class="dim">Agent calls connect_and_index...</span>
 <span class="dim">Crawling object model...</span>
 <span class="ok"> Indexed 1,247 objects across 3 namespaces</span>
-<span class="ok"> BM25 search index ready</span></div>
+<span class="ok"> BM25 search index ready</span>
+<span class="ok"> Graph: 1,247 nodes, 3,891 edges</span></div>
         </div>
       </div>
-      <p class="hero-caption">i3xrag running as an MCP server &mdash; agent connects, indexes, and searches</p>
+      <p class="hero-caption">i3xrag running as an MCP server &mdash; agent connects, indexes, searches, and traverses the object graph</p>
     </section>
     <hr class="section-rule">
     <section class="section">
-      <div class="features-header reveal"><div class="section-label">Capabilities</div><h2 class="section-title">Search, don't browse</h2><p class="section-desc">Let AI agents find objects by meaning, not by ID.</p></div>
+      <div class="features-header reveal"><div class="section-label">Capabilities</div><h2 class="section-title">Search, traverse, analyze</h2><p class="section-desc">Let AI agents find objects by meaning and explore them by structure.</p></div>
       <div class="feature-list reveal">
-        <div class="feature-item" data-num="01"><h3>Full Model Crawl</h3><p>Automatically discovers and indexes every namespace, type, object, and relationship in the i3X server.</p></div>
-        <div class="feature-item" data-num="02"><h3>BM25 Search</h3><p>Industry-standard ranking algorithm. Search by display name, type, namespace, or any combination of terms.</p></div>
-        <div class="feature-item" data-num="03"><h3>Natural Language</h3><p>Agents ask questions like &ldquo;find all temperature sensors&rdquo; or &ldquo;show pumps in Building A&rdquo; and get ranked results.</p></div>
-        <div class="feature-item" data-num="04"><h3>Type-Scoped Search</h3><p>Narrow search to a specific object type for precision. Combine free-text with structural filtering.</p></div>
-        <div class="feature-item" data-num="05"><h3>Model Overview</h3><p>Describe the full model structure &mdash; namespace count, type distribution, total objects &mdash; before diving in.</p></div>
-        <div class="feature-item" data-num="06"><h3>Live Data Access</h3><p>After finding objects via search, read their live values, quality, and relationships through the same MCP server.</p></div>
+        <div class="feature-item" data-num="01"><h3>BM25 Search</h3><p>Industry-standard ranking algorithm. Search by display name, type, namespace, or any combination of natural language terms.</p></div>
+        <div class="feature-item" data-num="02"><h3>In-Memory Graph</h3><p>Every object, composition, and relationship stored as a traversable graph. Walk edges, find paths, explore neighborhoods.</p></div>
+        <div class="feature-item" data-num="03"><h3>Graph Traversal</h3><p>Walk N hops from any node, filtered by edge type or node type. Find shortest paths between objects. Explore full neighborhoods.</p></div>
+        <div class="feature-item" data-num="04"><h3>Structural Analysis</h3><p>Count objects by type under a subtree. Walk ancestor chains to the root. Aggregate across the entire model by type or parent.</p></div>
+        <div class="feature-item" data-num="05"><h3>Full Model Crawl</h3><p>Automatically discovers and indexes every namespace, type, object, relationship, and value. Both indexes built from a single crawl.</p></div>
+        <div class="feature-item" data-num="06"><h3>Live Data Access</h3><p>After finding objects via search or traversal, read their live values, quality, and relationships through the same MCP server.</p></div>
       </div>
     </section>
-    <div class="concept-break reveal"><div class="concept-break-inner"><img src="i3xrag_image.png" alt="i3xrag concept"><div class="concept-overlay"><div class="section-label">The Concept</div><h3>Index once, search instantly</h3><p>The entire i3X object model is crawled and indexed on startup. AI agents search by meaning instead of navigating hierarchies manually.</p></div></div></div>
+    <div class="concept-break reveal"><div class="concept-break-inner"><img src="i3xrag_image.png" alt="i3xrag concept"><div class="concept-overlay"><div class="section-label">The Concept</div><h3>Search finds the needle. Graph explains the haystack.</h3><p>BM25 finds objects by meaning. The graph reveals how they connect &mdash; traversals, paths, subtrees, and aggregations from a single crawl.</p></div></div></div>
     <hr class="section-rule">
     <section class="section">
       <div class="reveal"><div class="section-label">Workflow</div><h2 class="section-title">Three steps</h2><p class="section-desc">From i3X API to searchable knowledge base in seconds.</p></div>
       <div class="pipeline reveal">
         <div class="pipe-step"><div class="pipe-num">01</div><h3>configure</h3><p>Add i3xrag to your MCP client config. Point it at the executable path.</p></div>
         <div class="pipe-arrow"><svg width="32" height="16" viewBox="0 0 32 16" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="0" y1="8" x2="28" y2="8"/><polyline points="22,2 28,8 22,14"/></svg></div>
-        <div class="pipe-step"><div class="pipe-num">02</div><h3>index</h3><p>The AI agent calls connect_and_index with a server URL. i3xrag crawls the full model and builds a BM25 search index.</p></div>
+        <div class="pipe-step"><div class="pipe-num">02</div><h3>index</h3><p>The AI agent calls connect_and_index with a server URL. i3xrag crawls the full model and builds a BM25 search index and graph database.</p></div>
         <div class="pipe-arrow"><svg width="32" height="16" viewBox="0 0 32 16" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="0" y1="8" x2="28" y2="8"/><polyline points="22,2 28,8 22,14"/></svg></div>
         <div class="pipe-step"><div class="pipe-num">03</div><h3>search</h3><p>Ask questions in natural language. Get ranked results. Read live values from the matches.</p></div>
       </div>

@@ -1,0 +1,83 @@
+# i3x.net
+
+> Open source tools for the i3X (Industrial Information Interoperability eXchange) standard. Connect databases, device telemetry, flat files, and industrial APIs to a single REST API.
+
+The i3X standard is maintained by the i3X Working Group. Official specification: https://i3x.dev
+
+## Tools
+
+### i3xdb — SQL Database to i3X API
+Connect to any SQL database (MSSQL, SQLite, PostgreSQL, MySQL, Snowflake). Auto-generate an i3X context model from schema introspection. Visual model designer with drag-and-zoom canvas. One-click auto-mapping of tables, foreign keys, and columns to i3X object types, compositions, and attributes. Export/import YAML config. Headless server mode for Docker/CI. No middleware, no ETL, no custom code.
+
+Workflow: connect → map → serve. Database to API in minutes.
+
+### i3xmt — MTConnect MQTT to i3X API
+Connect to an MQTT broker receiving MTConnect device data. Auto-discover components, data items, and specifications from Probe messages. Visual model designer maps MTConnect component hierarchy to i3X composition tree. Live values from Current and Sample streams. YAML config export. Headless server mode.
+
+Workflow: connect → map → serve. Machine data to API in minutes.
+
+### i3xcsv — CSV/Excel to i3X API
+Load CSV and Excel files. Auto-detect cross-file relationships by matching ID columns. Visual model designer with dual-view (file schema / i3X tree). Virtual foreign keys for linking files without physical constraints. Request inspector for debugging. No database required.
+
+Workflow: load → map → serve. Flat files to API in minutes.
+
+### i3xag — i3X Aggregator
+Merge multiple i3X servers into one unified endpoint. Concurrent fan-out dispatches requests to all upstreams in parallel. Graceful degradation returns partial results when upstreams are down. Health monitoring at /health. Same API surface as any i3X server — clients connect without modification. YAML or CLI configuration.
+
+Workflow: configure → start → connect. Multiple servers to one endpoint in minutes.
+
+### i3xview — Interactive Graph Viewer
+Visualize the entire i3X object model as a navigable node graph. Pan, zoom, drag nodes. Composition hierarchy renders as a tree layout. Relationship edges displayed as colored, labeled lines. Live values shown on hover. Force-directed and hierarchical layout modes. Radial context menu for gather, collapse/expand, pin/unpin. Runs as static webapp or native desktop app (Tauri).
+
+Workflow: connect → explore → understand. Server to graph in seconds.
+
+### i3xdash — Live Dashboard Builder
+Connect to any i3X server and build real-time dashboards. Browse the full object hierarchy (namespaces, types, instances). Four tile types: value, gauge, sparkline, state timeline. Drag-and-resize grid layout. Per-tile configuration (units, thresholds, colors, ranges). Save/load dashboard layouts to JSON.
+
+Workflow: connect → browse → dashboard. Connection to live dashboard in minutes.
+
+### i3xmcp — MCP Server for AI Agents
+Turn any i3X REST API into MCP (Model Context Protocol) tools for AI agents. Every i3X endpoint exposed: namespaces, object types, objects, values, relationships. Compatible with Claude, GPT, and any MCP-capable agent or IDE. Single executable, zero config. Point at a server URL and start.
+
+MCP tools: list_namespaces, list_object_types, list_objects, get_value, get_related, get_values_bulk.
+
+### i3xrag — RAG + Graph + MCP Server for AI Agents
+Crawl an i3X server, build a BM25 search index and an in-memory graph database over every object, and let AI agents find and traverse data with natural language queries.
+
+Search tools: search (natural language BM25), search_by_type, describe_model.
+Graph tools: traverse (walk N hops filtered by edge/node type), find_path (shortest path between two nodes), neighborhood (all nodes within N hops), subtree_summary (count objects by type under a parent), ancestors (walk up hierarchy to root), aggregate (group by type or parent).
+Direct access: get_object, get_value, get_values_bulk, get_related.
+
+Workflow: configure → index → search/traverse. i3X API to searchable, traversable knowledge base in seconds.
+
+### i3xopc — OPC-UA to i3X API (Coming Soon)
+Bridge OPC-UA address spaces to i3X context models. Subscribe to live node values and serve them through a REST API.
+
+### i3X Explorer — Desktop Client (by ACE Technologies)
+Cross-platform desktop client for browsing and monitoring any i3X-compliant API server. https://www.acetechnologies.net/i3X/
+
+## i3X Data Model Concepts
+
+- **Namespace**: A scoping container for types and objects (identified by URI).
+- **Object Type**: A schema definition (e.g., Equipment, Sensor, Area). Objects are instances of types.
+- **Object Instance**: A concrete entity in the model (e.g., "Filler Line 1", "Temperature Sensor 3").
+- **Composition (HasComponent)**: Parent-child hierarchy. A parent object contains child objects.
+- **Relationship**: Named, typed links between objects (e.g., "ProducedBy", "LocatedIn", "MaintainedBy").
+- **Value (VQT)**: Live data — a value, quality indicator, and timestamp tuple attached to an object.
+
+## API
+
+All i3X servers expose a standards-compliant REST API:
+- `GET /namespaces` — list namespaces
+- `GET /objecttypes` — list object types (optional `?namespaceUri=` filter)
+- `GET /objects` — list object instances (optional `?typeId=` filter)
+- `GET /relationshiptypes` — list relationship types
+- `POST /objects/list` — get objects by element IDs
+- `POST /objects/related` — get related objects for given element IDs
+- `POST /objects/value` — get live values for given element IDs
+
+OpenAPI specification: https://api.i3x.dev/v0/openapi.json
+
+## Downloads
+
+All tools available at: https://i3x.net (Downloads page)

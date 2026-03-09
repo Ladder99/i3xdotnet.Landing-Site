@@ -36,17 +36,13 @@ Connect to any i3X server and build real-time dashboards. Browse the full object
 
 Workflow: connect → browse → dashboard. Connection to live dashboard in minutes.
 
-### i3xmcp — MCP Server for AI Agents
-Turn any i3X REST API into MCP (Model Context Protocol) tools for AI agents. Every i3X endpoint exposed: namespaces, object types, objects, values, relationships. Compatible with Claude, GPT, and any MCP-capable agent or IDE. Single executable, zero config. Point at a server URL and start.
+### i3xrag — MCP Server for AI Agents
+MCP (Model Context Protocol) server that gives AI agents full access to any i3X API — live queries, BM25 search, and an in-memory graph database. On connect, crawls the entire i3X object model and builds both indexes. Compatible with Claude, GPT, and any MCP-capable agent or IDE. Single executable, zero config.
 
-MCP tools: list_namespaces, list_object_types, list_objects, get_value, get_related, get_values_bulk.
-
-### i3xrag — RAG + Graph + MCP Server for AI Agents
-Crawl an i3X server, build a BM25 search index and an in-memory graph database over every object, and let AI agents find and traverse data with natural language queries.
-
-Search tools: search (natural language BM25), search_by_type, describe_model.
-Graph tools: traverse (walk N hops filtered by edge/node type), find_path (shortest path between two nodes), neighborhood (all nodes within N hops), subtree_summary (count objects by type under a parent), ancestors (walk up hierarchy to root), aggregate (group by type or parent).
-Direct access: get_object, get_value, get_values_bulk, get_related.
+Direct access: connect_and_index, list_servers, get_object, get_value, get_values_bulk, get_related, list_namespaces, list_object_types, list_objects.
+Search tools: search (natural language BM25), search_by_type, search_related, describe_model.
+Graph tools: traverse (walk N hops filtered by edge/node type), find_path (shortest path between two nodes), neighborhood (all nodes within N hops), subtree_summary (count objects by type under a parent), ancestors (walk up hierarchy to root), aggregate (group by type or parent), composition_tree, relationship_map, type_schema.
+Analysis tools: value_filter (filter by quality/range), stale_values (find outdated values).
 
 Workflow: configure → index → search/traverse. i3X API to searchable, traversable knowledge base in seconds.
 
